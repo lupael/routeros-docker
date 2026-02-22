@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM alpine AS build
 
-LABEL maintainer="Henrique Sebastião <contato@henriquesebastiao.com>"
+LABEL maintainer="Lupael <support@ispbills.com>"
 
 ARG ROUTEROS_VERSION
 
