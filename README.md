@@ -1,7 +1,7 @@
 # Mikrotik RouterOS on Docker
 
-[![Build and Push Docker Image](https://github.com/henriquesebastiao/routeros-docker/actions/workflows/build.yml/badge.svg)](https://github.com/henriquesebastiao/routeros-docker/actions/workflows/build.yml)
-[![Version](https://img.shields.io/github/v/release/henriquesebastiao/routeros-docker?color=blue)](https://github.com/henriquesebastiao/routeros-docker/releases)
+[![Build and Push Docker Image](https://github.com/lupael/routeros-docker/actions/workflows/build.yml/badge.svg)](https://github.com/lupael/routeros-docker/actions/workflows/build.yml)
+[![Version](https://img.shields.io/github/v/release/henriquesebastiao/routeros-docker?color=blue)](https://github.com/lupael/routeros-docker/releases)
 ![Mikrotik](https://img.shields.io/badge/Mikrorik-293239?style=flat&logo=mikrotik&logoColor=white)
 
 Docker image for Mikrotik RouterOS.
@@ -13,7 +13,7 @@ Docker image for Mikrotik RouterOS.
 
 ## Supported Architectures
 
-Simply pulling `henriquesebastiao/routeros:latest` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+Simply pulling `lupael/routeros:latest` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
 The architectures supported by this image are:
 
@@ -35,7 +35,7 @@ To help you get started creating a container from this image you can either use 
 services:
     routeros:
         container_name: "routeros"
-        image: henriquesebastiao/routeros:latest
+        image: lupael/routeros:latest
         privileged: true
         ports:
             - "22:22" # SSH
@@ -58,7 +58,7 @@ docker run -d \
     -p 8291:8291 \
     --cap-add=NET_ADMIN \
     --device=/dev/net/tun \
-    henriquesebastiao/routeros:latest
+    lupael/routeros:latest
 ```
 
 ### Ports and Protocols Exposed
