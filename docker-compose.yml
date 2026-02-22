@@ -1,0 +1,13 @@
+services:
+    routeros:
+        container_name: "routeros"
+        image: henriquesebastiao/routeros:latest
+        privileged: true
+        ports:
+            - "22:22" # SSH
+            - "80:80" # Web
+            - "8291:8291" # Winbox
+        cap_add: 
+            - NET_ADMIN
+        devices: 
+            - /dev/net/tun
