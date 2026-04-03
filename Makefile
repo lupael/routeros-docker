@@ -1,7 +1,7 @@
 #!make
 
-ROUTEROS_VERSION := 7.21.1
-TARGET := henriquesebastiao/routeros
+ROUTEROS_VERSION := 7.22.1
+TARGET := lupael/routeros
 
 all: build latest
 
