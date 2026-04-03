@@ -4,9 +4,19 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'RouterOS version (e.g. 7.9). If empty the action extracts version from git tag.'
+        required: false
+        default: ''
+      release:
+        description: 'Create GitHub release when manually run (true/false).'
+        required: false
+        default: 'true'
 
 concurrency:
-  group: ${{ github.workflow}}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
@@ -18,9 +28,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract version from git tags
+      - name: Extract version from git tags or workflow input
         id: version
-        run: echo "VERSION=$(git describe --tags --always | cut -d'-' -f1 | sed 's/^v//')" >> "$GITHUB_OUTPUT"
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "Using version from workflow input: '${{ github.event.inputs.version }}'"
+            echo "VERSION=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "Extracting version from git tags"
+            echo "VERSION=$(git describe --tags --always | cut -d'-' -f1 | sed 's/^v//')" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Validate RouterOS download URL
         run: |
@@ -67,6 +84,6 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release == 'true')
         with:
           body_path: ./CHANGELOG.md
