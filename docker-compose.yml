@@ -1,7 +1,7 @@
 services:
     routeros:
         container_name: "routeros"
-        image: henriquesebastiao/routeros:latest
+        image: lupael/routeros:latest
         privileged: true
         ports:
             - "22:22" # SSH
