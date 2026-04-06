@@ -10,7 +10,6 @@ build:
 	docker buildx build --build-arg ROUTEROS_VERSION=$(ROUTEROS_VERSION) --platform=linux/amd64,linux/arm64 -t $(TARGET):$(ROUTEROS_VERSION) --push .
 
 latest:
-	docker buildx create --use
 	docker buildx build --build-arg ROUTEROS_VERSION=$(ROUTEROS_VERSION) --platform=linux/amd64,linux/arm64 -t $(TARGET):latest --push .
 
 lint:

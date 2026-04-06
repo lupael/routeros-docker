@@ -1,6 +1,11 @@
-FROM --platform=$BUILDPLATFORM alpine AS build
+FROM --platform=$BUILDPLATFORM alpine:3.21
 
-LABEL maintainer="Lupael <support@ispbills.com>"
+LABEL maintainer="Lupael <support@ispbills.com>" \
+      org.opencontainers.image.title="RouterOS" \
+      org.opencontainers.image.description="Mikrotik RouterOS CHR running inside QEMU" \
+      org.opencontainers.image.url="https://github.com/lupael/routeros-docker" \
+      org.opencontainers.image.source="https://github.com/lupael/routeros-docker" \
+      org.opencontainers.image.licenses="MIT"
 
 ARG ROUTEROS_VERSION
 

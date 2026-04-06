@@ -2,6 +2,7 @@ services:
     routeros:
         container_name: "routeros"
         image: lupael/routeros:latest
+        restart: unless-stopped
         privileged: true
         ports:
             - "22:22" # SSH
