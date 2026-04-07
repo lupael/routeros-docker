@@ -41,11 +41,13 @@ jobs:
             echo "VERSION=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
           else
             EXTRACTED=$(git describe --tags --always | cut -d'-' -f1 | sed 's/^v//')
-            if echo "$EXTRACTED" | grep -qE '^[0-9]+\.[0-9]+'; then
+            # Match versions like 7.22.1, 7.23beta5, 7.23 (digit.digit[...])
+            if echo "$EXTRACTED" | grep -qE '^[0-9]+\.[0-9]+[0-9a-zA-Z.]*$'; then
               echo "Using version from git tag: $EXTRACTED"
               echo "VERSION=$EXTRACTED" >> "$GITHUB_OUTPUT"
             else
               echo "Tag '$EXTRACTED' is not a valid version number, fetching latest RouterOS version from MikroTik..."
+              # LATEST.7 returns the latest stable RouterOS 7.x release; update to LATEST.8 when v8 ships
               LATEST=$(curl -sf "https://upgrade.mikrotik.com/routeros/LATEST.7" | awk '{print $1}')
               if [ -z "$LATEST" ]; then
                 echo "::error::Failed to fetch latest RouterOS version from MikroTik upgrade server"
