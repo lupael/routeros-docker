@@ -1,6 +1,6 @@
 # Mikrotik RouterOS on Docker
 [![Build and Push Docker Image](https://github.com/lupael/routeros-docker/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/lupael/routeros-docker/actions/workflows/build.yml)
-[![Version](https://img.shields.io/github/v/release/henriquesebastiao/routeros-docker?color=blue)](https://github.com/lupael/routeros-docker/releases)
+[![Version](https://img.shields.io/github/v/release/lupael/routeros-docker?color=blue)](https://github.com/lupael/routeros-docker/releases)
 ![Mikrotik](https://img.shields.io/badge/Mikrorik-293239?style=flat&logo=mikrotik&logoColor=white)
 
 Docker image for Mikrotik RouterOS.

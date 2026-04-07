@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # A bridge of this name will be created to host the TAP interface created for
 # the VM
@@ -24,7 +25,7 @@ function default_intf() {
 # on our current address/routes. We "steal" the container's IP, and lease
 # it to the VM once it starts up.
 /routeros/bin/generate-dhcpd-conf.py $QEMU_BRIDGE > $DHCPD_CONF_FILE
-default_dev=`default_intf`
+default_dev=$(default_intf)
 
 # Now we start modifying the networking configuration. First we clear out
 # the IP address of the default device (will also have the side-effect of
@@ -40,12 +41,20 @@ ip link set dev $default_dev master $QEMU_BRIDGE
 ip link set dev $default_dev up
 ip link set dev $QEMU_BRIDGE up
 
+mkdir -p /var/lib/udhcpd
 touch /var/lib/udhcpd/udhcpd.leases
 # Finally, start our DHCPD server
 udhcpd -I $DUMMY_DHCPD_IP -f $DHCPD_CONF_FILE &
 
+# Enable KVM acceleration when available (x86_64 hosts only).
+KVM_ARGS=""
+if [ -e /dev/kvm ]; then
+    KVM_ARGS="-enable-kvm -cpu host"
+    echo "KVM acceleration enabled"
+fi
+
 # And run the VM! A brief explanation of the options here:
-# -enable-kvm: Use KVM for this VM (much faster for our case).
+# -enable-kvm: Use KVM for this VM when available (much faster).
 # -nographic: disable SDL graphics.
 # -serial mon:stdio: use "monitored stdio" as our serial output.
 # -nic: Use a TAP interface with our custom up/down scripts.
@@ -53,6 +62,7 @@ udhcpd -I $DUMMY_DHCPD_IP -f $DHCPD_CONF_FILE &
 exec qemu-system-x86_64 \
     -nographic -serial mon:stdio \
     -m 256 \
+    $KVM_ARGS \
     "$@" \
     -hda $ROUTEROS_IMAGE \
     -device e1000,netdev=net0 \
